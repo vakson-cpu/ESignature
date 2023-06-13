@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Signature.css">
+    <title>Signature</title>
+
+  </head>
+  <body>
+    <form action="" class="signature-pad-form">
+
+
+
+        <h1>
+            Important Contract
+        </h1>
+        <div class="parent-div"> 
+        
+        <ul><li><p class="child-div-text">Statement of Goods and Services</p></li></ul>
+
+        <canvas height="100" width="300" id="firstSignature" class="signature-pad"></canvas>
+        <span  onclick="onCanvasClick()" id="signature1">(Hand Drawn Signature line)</span>
+        <button class="submit--button">Submit</button>
+        </div>
+        <div class="parent-div"> 
+               <ul><li> <p class="child-div-text">Please give Cremation authorization</p></li></ul>
+        <canvas height="100" width="300" class="signature-pad" id="secondSignature"></canvas>
+        <span onclick="onCanvasClick2()" id="signature2">(Hand Drawn Signature line)</span>
+        <button class="submit--button">Submit</button>
+
+        </div>
+        
+        <div class="parent-div"> 
+            <ul><li> <p class="child-div-text">Embalming Authorization</p></li></ul>
+        <canvas height="100" width="300" class="signature-pad"  id="thirdSignature"></canvas>
+        <span onclick="onCanvasClick3()" id="signature3">(Hand Drawn Signature line)</span>
+        <button class="submit--button">Submit</button>
+
+        </div>
+
+
+    </form>
+
+
+    
+  </body>
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+  <script src = "./Signature1.js"> </script>
+  <script src = "./Signature2.js"> </script>
+  <script src = "./Signature3.js"> </script>
+  <script src = "./globalVariable.js"> </script>
+</html>

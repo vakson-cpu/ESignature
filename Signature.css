@@ -1,0 +1,75 @@
+
+
+ body{
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.4;
+    margin:0;
+    padding: 0;
+ }
+
+.signature-pad-form{
+    max-width: 400px;
+    margin:0 auto;
+}
+
+.submit--button{
+    width:200px;
+    color:black;
+    background-color: beige;
+    margin-top: 10px;
+}
+.signature-pad{
+    cursor:url("pen.png"),pointer !important;
+    border-bottom:2px solid red;
+    border-radius: 4px;
+    display: none;
+    /* margin-left: 30px; */
+}
+
+#signature1 {
+    /* position: absolute; */
+    /* top: 80%; */
+    /* left:100px; */
+    /* transform: translate(-50%, -50%); Center the text within the canvas */
+    z-index: 2;
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+    
+
+}
+#signature2 {
+    z-index: 2;
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+
+}
+#signature3 {
+    z-index: 2;
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+
+}
+
+.parent-div{
+    
+    margin-bottom: 20px;
+    margin-top: 40px;
+}
+.child-div-text{
+    /* position: absolute;
+    top:10px; */
+    font-weight: bold;
+
+    
+}
+.clear-button{
+    color:blue
+}
+.submit-button{
+    width: 100%;
+
+}
+
