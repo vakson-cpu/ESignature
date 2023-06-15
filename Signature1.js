@@ -1,7 +1,7 @@
 
 const canvas = document.getElementById("firstSignature");
 const form = document.querySelector(".signature-pad-form");
-
+const xButton1= document.getElementById("x1");
 const clearButton = document.querySelector(".clear-button");
 
 const ctx = canvas.getContext("2d");
@@ -28,10 +28,10 @@ const clearPad = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-clearButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  clearPad();
-});
+// clearButton.addEventListener("click", (event) => {
+//   event.preventDefault();
+//   clearPad();
+// });
 
 const handlePointerUp = () => {
   writtingMode = false;
@@ -45,11 +45,16 @@ const handlePointerDown = (event) => {
 };
 ctx.lineWidth = 3;
 ctx.lineJoin = ctx.lineCap = "round";
-
+xButton1.addEventListener("click", (event) => {
+    event.preventDefault();
+    clearPad();
+  });
+  
 const onCanvasClick = () => {
   let spanText = document.getElementById("signature1");
   spanText.hidden = true;
   canvas.style.display="block"
+  xButton1.style.display="block"
 };
 
 canvas.addEventListener("pointerdown", handlePointerDown, { passive: true });

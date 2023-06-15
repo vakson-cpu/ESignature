@@ -35,10 +35,10 @@ const clearPad2 = () => {
   ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
 };
 
-clearButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  clearPad();
-});
+// clearButton.addEventListener("click", (event) => {
+//   event.preventDefault();
+//   clearPad();
+// });
 
 const handlePointerUp2 = () => {
   writtingMode2 = false;

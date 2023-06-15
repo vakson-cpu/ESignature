@@ -3,51 +3,188 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="Signature.css">
+    <link rel="stylesheet" href="Signature.css" />
     <title>Signature</title>
-
   </head>
   <body>
     <form action="" class="signature-pad-form">
-
-
-
-        <h1>
-            Important Contract
-        </h1>
-        <div class="parent-div"> 
-        
-        <ul><li><p class="child-div-text">Statement of Goods and Services</p></li></ul>
-
-        <canvas height="100" width="300" id="firstSignature" class="signature-pad"></canvas>
-        <span  onclick="onCanvasClick()" id="signature1">(Hand Drawn Signature line)</span>
-        <button class="submit--button">Submit</button>
+      <h1>Important Contract</h1>
+      <div class="parent-div">
+        <ul>
+          <li><p class="child-div-text">Statement of Goods and Services</p></li>
+        </ul>
+        <div class="input--Box">
+          <label>Deceased:</label>
+          <input class="input--name" type="text" id="deceased1" />
         </div>
-        <div class="parent-div"> 
-               <ul><li> <p class="child-div-text">Please give Cremation authorization</p></li></ul>
-        <canvas height="100" width="300" class="signature-pad" id="secondSignature"></canvas>
-        <span onclick="onCanvasClick2()" id="signature2">(Hand Drawn Signature line)</span>
-        <button class="submit--button">Submit</button>
-
+        <div class="input--Box">
+          <label>Signer:</label>
+          <input class="input--name" type="text" id="signer1" />
         </div>
-        
-        <div class="parent-div"> 
-            <ul><li> <p class="child-div-text">Embalming Authorization</p></li></ul>
-        <canvas height="100" width="300" class="signature-pad"  id="thirdSignature"></canvas>
-        <span onclick="onCanvasClick3()" id="signature3">(Hand Drawn Signature line)</span>
-        <button class="submit--button">Submit</button>
-
+        <br />
+        <div class="canvas--button--box">
+          <canvas
+            height="80"
+            width="300"
+            id="firstSignature"
+            class="signature-pad"
+          ></canvas>
+          <img class="x--button" id="x1" src="XButton.png" />
         </div>
 
+        <span onclick="onCanvasClick()" id="signature1"
+          >(Hand Drawn Signature line)</span
+        >
+        <button class="submit--button" onclick="submitHandler1(event)">
+          Submit
+        </button>
+      </div>
+      <div class="parent-div">
+        <ul>
+          <li>
+            <p class="child-div-text">Please give Cremation authorization</p>
+          </li>
+        </ul>
+        <div class="input--Box">
+          <label>Full Name :</label>
+          <input class="input--name" type="text" id="name2" />
+        </div>
+        <br />
+        <canvas
+          height="80"
+          width="300"
+          class="signature-pad"
+          id="secondSignature"
+        ></canvas>
+        <span onclick="onCanvasClick2()" id="signature2"
+          >(Hand Drawn Signature line)</span
+        >
 
+        <button class="submit--button">Submit</button>
+      </div>
+
+      <div class="parent-div">
+        <ul>
+          <li><p class="child-div-text">Embalming Authorization</p></li>
+        </ul>
+        <div class="input--Box">
+          <label>Full Name :</label>
+          <input class="input--name" type="text" id="name3" />
+        </div>
+        <br />
+        <canvas
+          height="80"
+          width="300"
+          class="signature-pad"
+          id="thirdSignature"
+        ></canvas>
+        <span onclick="onCanvasClick3()" id="signature3"
+          >(Hand Drawn Signature line)</span
+        >
+      </div>
     </form>
-
-
-    
   </body>
   <script src="https://smtpjs.com/v3/smtp.js"></script>
-  <script src = "./Signature1.js"> </script>
-  <script src = "./Signature2.js"> </script>
-  <script src = "./Signature3.js"> </script>
-  <script src = "./globalVariable.js"> </script>
+
+  <script>
+    const submitHandler1 = async (event) => {
+      event.preventDefault();
+      const imageURL = canvas.toDataURL("image/png");
+      const image = document.createElement("img");
+      const signer1= document.getElementById("signer1").value
+      const deceased1= document.getElementById("deceased1").value
+      image.src = imageURL;
+      image.height = "100px";
+      image.width = "300px";
+      image.style.display = "block";
+
+   await sendEmail(
+        "mailerbot12@gmail.com",
+        imageURL,
+        "Attestaions and  Authorizaitons",
+        deceased1,
+        signer1
+      );
+    };
+
+    async function sendEmail(email, imageUrl, title, deceased,signer) {
+      var template = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Email Template</title>
+      <style>
+
+      </style>
+    </head>
+    <body>
+        <h3 class="blue--title">Attestaions and  Authorizaitons</h3>
+        <div class="signature--box">
+        <ul><li><p>${title}</p></li>
+            </ul>
+        <p>Name of Deceased: ${deceased}></p>
+        <p>Signer: ${signer}</p>
+        <div id="imageHolder"></div>
+        <img   src='cid:signatureImage' alt="signature" title="picture" />    </body>
+        <img   src='${imageUrl}' alt="signature" title="picture" />    </body>
+    </html>
+    `;
+      const attachment = {
+        name: "image.png",
+        data: imageUrl.split(",")[1], // Extract base64 data from imageUrl
+        cid: "signatureImage", // Content-ID for referencing in HTML
+      };
+//supportteam@elasticemail.com
+      await Email.send({
+        Host: "smtp.elasticemail.com",
+        Username: "mailerbot12@gmail.com",
+        Password: "02604EF7225F5FA00EF2ECAFA48C277311D5",
+        To: "vakson12@gmail.com",
+        From: "mailerbot12@gmail.com",
+        Subject: "Signed Document",
+        Body: template,
+        Attachments: [attachment],
+      })
+        .then(function (message) {
+          console.log(message);
+          alert("mail sent successfully");
+        })
+        .catch((err) => {
+          alert("Something went wrong");
+          console.log(err);
+        });
+
+    }
+      // fetch("https://hosted-mailer.vercel.app/SendMail", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   data:{
+      //   imageUrl: imageURL,
+      //   name:deceased1,
+      //   title:"Cremation authorization",
+      //   email: "muhamedsadovic41@gmail.com",
+      // }
+      // })
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     alert("Image sent successfuly")
+      //     // Handle the response data
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //     alert("something went wrong")
+      //   });
+      // }
+    // Append the image element to the body
+
+   
+  </script>
+
+  <script src="./Signature1.js"></script>
+  <script src="./Signature2.js"></script>
+  <script src="./Signature3.js"></script>
+  <script src="./globalVariable.js"></script>
 </html>

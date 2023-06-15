@@ -9,23 +9,52 @@
 
 .signature-pad-form{
     max-width: 400px;
-    margin:0 auto;
+    margin-left: 200px;
 }
-
+.x--button{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: none;
+}
+.canvas--button--box{
+    display: grid;
+    grid-template-columns: 90% 10%;
+}
 .submit--button{
     width:200px;
     color:black;
     background-color: beige;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-left: 60px;
+    
+
 }
 .signature-pad{
     cursor:url("pen.png"),pointer !important;
     border-bottom:2px solid red;
     border-radius: 4px;
     display: none;
-    /* margin-left: 30px; */
+    margin-left: 60px;
+}
+.input--Box{
+    display: grid;
+    grid-template-columns: 30%  80%;
+    margin-left: 60px;   
+    margin-top: 20px;
+
 }
 
+.input--name{
+    width:200px;
+    border:none;
+    border-bottom: 1px solid black;
+    
+}
+.input--name:active,
+.input--name:focus {
+  outline: none;
+}
 #signature1 {
     /* position: absolute; */
     /* top: 80%; */
@@ -35,7 +64,7 @@
     color: red;
     cursor: pointer;
     font-weight: bold;
-    
+    margin-left: 60px;
 
 }
 #signature2 {
@@ -43,6 +72,8 @@
     color: red;
     cursor: pointer;
     font-weight: bold;
+    margin-left: 60px;
+
 
 }
 #signature3 {
@@ -50,6 +81,7 @@
     color: red;
     cursor: pointer;
     font-weight: bold;
+    margin-left: 60px;
 
 }
 
@@ -68,8 +100,3 @@
 .clear-button{
     color:blue
 }
-.submit-button{
-    width: 100%;
-
-}
-
