@@ -41,26 +41,31 @@
       </div>
       <div class="parent-div">
         <ul>
-          <li>
-            <p class="child-div-text">Please give Cremation authorization</p>
-          </li>
+          <li><p class="child-div-text">Cremation authorization</p></li>
         </ul>
         <div class="input--Box">
-          <label>Full Name :</label>
-          <input class="input--name" type="text" id="name2" />
+          <label>Deceased:</label>
+          <input class="input--name" type="text" id="deceased2" />
+        </div>
+        <div class="input--Box">
+          <label>Signer:</label>
+          <input class="input--name" type="text" id="signer2" />
         </div>
         <br />
-        <canvas
-          height="80"
-          width="300"
-          class="signature-pad"
-          id="secondSignature"
-        ></canvas>
+        <div class="canvas--button--box">
+          <canvas
+            height="80"
+            width="300"
+            id="secondSignature"
+            class="signature-pad"
+          ></canvas>
+          <img class="x--button" id="x2" src="XButton.png" />
+        </div>
         <span onclick="onCanvasClick2()" id="signature2"
           >(Hand Drawn Signature line)</span
         >
 
-        <button class="submit--button">Submit</button>
+        <button onclick="submitHandler2(event)" class="submit--button">Submit</button>
       </div>
 
       <div class="parent-div">
@@ -68,74 +73,260 @@
           <li><p class="child-div-text">Embalming Authorization</p></li>
         </ul>
         <div class="input--Box">
-          <label>Full Name :</label>
-          <input class="input--name" type="text" id="name3" />
+          <label>Deceased:</label>
+          <input class="input--name" type="text" id="deceased3" />
+        </div>
+        <div class="input--Box">
+          <label>Signer:</label>
+          <input class="input--name" type="text" id="signer3" />
         </div>
         <br />
-        <canvas
-          height="80"
-          width="300"
-          class="signature-pad"
-          id="thirdSignature"
-        ></canvas>
+        <div class="canvas--button--box">
+          <canvas
+            height="80"
+            width="300"
+            id="thirdSignature"
+            class="signature-pad"
+          ></canvas>
+          <img class="x--button" id="x3" src="XButton.png" />
+        </div>
         <span onclick="onCanvasClick3()" id="signature3"
           >(Hand Drawn Signature line)</span
         >
+        <button onclick="submitHandler3(event)" class="submit--button">Submit</button>
+
       </div>
+      <br/>
+      <br/>
+      <br/>
     </form>
+
   </body>
   <script src="https://smtpjs.com/v3/smtp.js"></script>
-
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
   <script>
+    const CanvasEmptyCheck = (canvas) => {
+      var context = canvas.getContext("2d");
+      var canvasData = context.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      ).data;
+
+      var isCanvasEmpty = true;
+
+      // Iterate over each pixel in the canvas
+      for (var i = 0; i < canvasData.length; i += 4) {
+        var red = canvasData[i];
+        var green = canvasData[i + 1];
+        var blue = canvasData[i + 2];
+        var alpha = canvasData[i + 3];
+
+        // Check if any pixel is not fully transparent
+        if (alpha !== 0) {
+          isCanvasEmpty = false;
+          break;
+        }
+      }
+      return isCanvasEmpty;
+    };
+      //First signature
     const submitHandler1 = async (event) => {
       event.preventDefault();
       const imageURL = canvas.toDataURL("image/png");
       const image = document.createElement("img");
-      const signer1= document.getElementById("signer1").value
-      const deceased1= document.getElementById("deceased1").value
+      const signer1 = document.getElementById("signer1").value;
+      const deceased1 = document.getElementById("deceased1").value;
+      if (signer1 === "" || deceased1 === "") {
+        alert("Signer and Deceased fields must not be empty!");
+        return;
+      }
+      if (CanvasEmptyCheck(canvas)) {
+        alert("Canvas is Empty!");
+        return;
+      }
       image.src = imageURL;
       image.height = "100px";
       image.width = "300px";
       image.style.display = "block";
 
-   await sendEmail(
-        "mailerbot12@gmail.com",
-        imageURL,
-        "Attestaions and  Authorizaitons",
-        deceased1,
-        signer1
-      );
+      console.log(imageURL);
+      var newCanvas = document.createElement("canvas");
+      newCanvas.width = 500;
+      newCanvas.height = 500;
+      var ctx2 = newCanvas.getContext("2d");
+
+      var attahcmentImage;
+      // Wait for the image to load
+      image.onload = async function () {
+        // Draw the image onto the canvas
+        ctx2.fillStyle = "white";
+        ctx2.fillRect(0, 0, newCanvas.width, newCanvas.height);
+        ctx2.fillStyle = "black";
+        ctx2.font = "25px Arial";
+        ctx2.fillText("Attestaions and  Authorizaitons", 10, 60);
+        ctx2.font = "20px Arial";
+        ctx2.fillText("Signer:" + signer1, 10, 100);
+        ctx2.fillText("Deceased:" + deceased1, 10, 130);
+        ctx2.drawImage(image, 10, 180);
+
+        // Add text to the canvas
+
+        // Append the canvas to the document body
+        // document.body.appendChild(newCanvas);
+        attahcmentImage = newCanvas.toDataURL("image/jpg");
+        await sendEmail(
+          "mailerbot12@gmail.com",
+          attahcmentImage,
+          "Attestaions and  Authorizaitons",
+          deceased1,
+          signer1
+        );
+      };
+    };
+    //Second signature
+    const submitHandler2 = async (event) => {
+      event.preventDefault();
+      const imageURL = canvas2.toDataURL("image/png");
+      const image = document.createElement("img");
+      const signer2 = document.getElementById("signer2").value;
+      const deceased2 = document.getElementById("deceased2").value;
+      if (signer2 === "" || deceased2 === "") {
+        alert("Signer and Deceased fields must not be empty!");
+        return;
+      }
+      if (CanvasEmptyCheck(canvas2)) {
+        alert("Canvas is Empty!");
+        return;
+      }
+      image.src = imageURL;
+      image.height = "100px";
+      image.width = "300px";
+      image.style.display = "block";
+
+      console.log(imageURL);
+      var newCanvas = document.createElement("canvas");
+      newCanvas.width = 500;
+      newCanvas.height = 500;
+      var ctx2 = newCanvas.getContext("2d");
+
+      var attahcmentImage;
+      // Wait for the image to load
+      image.onload = async function () {
+        // Draw the image onto the canvas
+        ctx2.fillStyle = "white";
+        ctx2.fillRect(0, 0, newCanvas.width, newCanvas.height);
+        ctx2.fillStyle = "black";
+        ctx2.font = "25px Arial";
+        ctx2.fillText("Cremation authorization", 10, 60);
+        ctx2.font = "20px Arial";
+        ctx2.fillText("Signer:" + signer2, 10, 100);
+        ctx2.fillText("Deceased:" + deceased2, 10, 130);
+        ctx2.drawImage(image, 10, 180);
+
+        // Add text to the canvas
+
+        // Append the canvas to the document body
+        // document.body.appendChild(newCanvas);
+        attahcmentImage = newCanvas.toDataURL("image/jpg");
+        await sendEmail(
+          "mailerbot12@gmail.com",
+          attahcmentImage,
+          "Cremation authorization",
+          deceased2,
+          signer2
+        );
+      };
+    };
+    //Third Signature
+    const submitHandler3 = async (event) => {
+      event.preventDefault();
+      const imageURL = canvas3.toDataURL("image/png");
+      const image = document.createElement("img");
+      const signer3 = document.getElementById("signer3").value;
+      const deceased3 = document.getElementById("deceased3").value;
+      if (signer3 === "" || deceased3 === "") {
+        alert("Signer and Deceased fields must not be empty!");
+        return;
+      }
+      if (CanvasEmptyCheck(canvas3)) {
+        alert("Canvas is Empty!");
+        return;
+      }
+      image.src = imageURL;
+      image.height = "100px";
+      image.width = "300px";
+      image.style.display = "block";
+
+      console.log(imageURL);
+      var newCanvas = document.createElement("canvas");
+      newCanvas.width = 500;
+      newCanvas.height = 500;
+      var ctx3 = newCanvas.getContext("2d");
+
+      var attahcmentImage;
+      // Wait for the image to load
+      image.onload = async function () {
+        // Draw the image onto the canvas
+        ctx3.fillStyle = "white";
+        ctx3.fillRect(0, 0, newCanvas.width, newCanvas.height);
+        ctx3.fillStyle = "black";
+        ctx3.font = "25px Arial";
+        ctx3.fillText("Embalming Authorization", 10, 60);
+        ctx3.font = "20px Arial";
+        ctx3.fillText("Signer:" + signer3, 10, 100);
+        ctx3.fillText("Deceased:" + deceased3, 10, 130);
+        ctx3.drawImage(image, 10, 180);
+
+        // Add text to the canvas
+
+        // Append the canvas to the document body
+        document.body.appendChild(newCanvas);
+        attahcmentImage = newCanvas.toDataURL("image/jpg");
+        console.log("attach", attahcmentImage);
+        await sendEmail(
+          "mailerbot12@gmail.com",
+          attahcmentImage,
+          "Embalming Authorization",
+          deceased3,
+          signer3
+        );
+      };
     };
 
-    async function sendEmail(email, imageUrl, title, deceased,signer) {
+    async function sendEmail(email, imageUrl, title, deceased, signer) {
       var template = `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Email Template</title>
-      <style>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>${title}</title>
+          <style>
 
-      </style>
-    </head>
-    <body>
-        <h3 class="blue--title">Attestaions and  Authorizaitons</h3>
-        <div class="signature--box">
-        <ul><li><p>${title}</p></li>
-            </ul>
-        <p>Name of Deceased: ${deceased}></p>
-        <p>Signer: ${signer}</p>
-        <div id="imageHolder"></div>
-        <img   src='cid:signatureImage' alt="signature" title="picture" />    </body>
-        <img   src='${imageUrl}' alt="signature" title="picture" />    </body>
-    </html>
-    `;
+          </style>
+        </head>
+        <body>
+            <h3 class="blue--title">Attestaions and  Authorizaitons</h3>
+            <div class="signature--box">
+            <ul><li><p>${title}</p></li>
+                </ul>
+            <p>Name of Deceased: ${deceased}</p>
+            <p>Signer: ${signer}</p>
+            </body>
+        </html>
+        `;
       const attachment = {
-        name: "image.png",
+        name: "image.jpg",
         data: imageUrl.split(",")[1], // Extract base64 data from imageUrl
         cid: "signatureImage", // Content-ID for referencing in HTML
       };
-//supportteam@elasticemail.com
+      //supportteam@elasticemail.com
       await Email.send({
         Host: "smtp.elasticemail.com",
         Username: "mailerbot12@gmail.com",
@@ -154,33 +345,7 @@
           alert("Something went wrong");
           console.log(err);
         });
-
     }
-      // fetch("https://hosted-mailer.vercel.app/SendMail", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   data:{
-      //   imageUrl: imageURL,
-      //   name:deceased1,
-      //   title:"Cremation authorization",
-      //   email: "muhamedsadovic41@gmail.com",
-      // }
-      // })
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     alert("Image sent successfuly")
-      //     // Handle the response data
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //     alert("something went wrong")
-      //   });
-      // }
-    // Append the image element to the body
-
-   
   </script>
 
   <script src="./Signature1.js"></script>

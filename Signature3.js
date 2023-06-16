@@ -1,5 +1,6 @@
 const canvas3 = document.getElementById("thirdSignature");
 
+const xButton3= document.getElementById("x3");
 
 const ctx3 = canvas3.getContext("2d");
 let writtingMode3=false;
@@ -31,14 +32,8 @@ const handlePointerMove3 = (event) => {
   ctx3.lineTo(positionX, positionY);
   ctx3.stroke();
 };
-const clearPad3 = () => {
-  ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
-};
+// 
 
-// clearButton.addEventListener("click", (event) => {
-//   event.preventDefault();
-//   clearPad();
-// });
 
 const handlePointerUp3 = () => {
   writtingMode3 = false;
@@ -57,8 +52,16 @@ const onCanvasClick3 = () => {
   let spanText = document.getElementById("signature3");
   spanText.hidden = true;
   canvas3.style.display="block"
-
+  xButton3.style.display="block"
 };
+
+const clearPad3 = () => {
+  ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
+};
+xButton3.addEventListener("click", (event) => {
+  event.preventDefault();
+  clearPad3();
+});
 
 canvas3.addEventListener("pointerdown", handlePointerDown3, { passive: true });
 canvas3.addEventListener("pointerup", handlePointerUp3, { passive: true });

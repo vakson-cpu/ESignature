@@ -1,5 +1,6 @@
 const canvas2 = document.getElementById("secondSignature");
 
+const xButton2= document.getElementById("x2");
 
 const ctx2 = canvas2.getContext("2d");
 let writtingMode2=false
@@ -31,9 +32,9 @@ const handlePointerMove2 = (event) => {
   ctx2.lineTo(positionX, psoitionY);
   ctx2.stroke();
 };
-const clearPad2 = () => {
-  ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-};
+// const clearPad2 = () => {
+//   ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+// };
 
 // clearButton.addEventListener("click", (event) => {
 //   event.preventDefault();
@@ -57,8 +58,18 @@ const onCanvasClick2 = () => {
   let spanText = document.getElementById("signature2");
   spanText.hidden = true;
   canvas2.style.display="block"
+  xButton2.style.display="block"
 
 };
+const clearPad2 = () => {
+  ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+};
+xButton2.addEventListener("click", (event) => {
+  event.preventDefault();
+  clearPad2();
+});
+
+
 
 canvas2.addEventListener("pointerdown", handlePointerDown2, { passive: true });
 canvas2.addEventListener("pointerup", handlePointerUp2, { passive: true });
